@@ -1,0 +1,22 @@
+﻿
+<script>
+    var quillMaterials = new Quill('#ThesisMaterials', {
+        theme: 'snow'
+    });
+
+    var quillDescription = new Quill('#ThesisDescription', {
+        theme: 'snow'
+    });
+
+    function handleSubmit() {
+        document.getElementById('dMaterials').value = quillMaterials.root.innerHTML;
+        document.getElementById('dDescription').value = quillDescription.root.innerHTML;
+    };
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#CheckedLanguages').multiselect({
+        });
+    });
+</script>

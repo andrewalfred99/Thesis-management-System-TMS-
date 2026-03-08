@@ -1,0 +1,55 @@
+﻿@page
+@using TMS.Areas.Identity.Data
+@inject SignInManager<PlatformUser> SignInManager
+@inject UserManager<PlatformUser> UserManager
+@model TMS.Pages.Requests.IndexModel
+
+@{
+    ViewData["Title"] = "Requests";
+}
+
+<h1>Requests</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Requests[0].Thesis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Requests[0].Student)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Requests[0].Approved)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Requests)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Thesis.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Approved)
+                </td>
+                <td>
+                    @if (!item.Approved && User.IsInRole("Teacher") && item.Thesis.Status == status.Open &&
+                        item.Thesis.Teachers.Contains(await UserManager.GetUserAsync(User)))
+                    {
+                        <form method="post">
+                            <div class="form-group">
+                                <input asp-page-handler="Approve" type="submit" value="Approve" class="btn btn-primary" />
+                                <input type="hidden" name="id" value="@item.Id" />
+                            </div>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

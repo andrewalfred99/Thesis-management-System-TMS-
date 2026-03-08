@@ -1,0 +1,100 @@
+﻿@page
+@model TMS.Pages.theses.CreateModel
+
+@{
+    ViewData["Title"] = "Create Thesis";
+}
+
+<h1>Create</h1>
+
+<h4>Thesis</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form method="post" onsubmit="handleSubmit()">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Thesis.Faculty" class="control-label"></label>
+                <select asp-for="Thesis.FacultyId" class="form-control" asp-items="ViewBag.FacultyId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Thesis.Name" class="control-label"></label>
+                <input asp-for="Thesis.Name" class="form-control" />
+                <span asp-validation-for="Thesis.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Thesis.Description" class="control-label"></label>
+                <input type="hidden" id="dDescription" asp-for="Thesis.Description" class="form-control" />
+                <div id="ThesisDescription">
+                    @if (Model.Thesis != null)
+                    {
+                        @Html.Raw(Model.Thesis.Description)
+                    }
+
+                </div>
+                <span asp-validation-for="Thesis.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Thesis.Materials" class="control-label"></label>
+                <input type="hidden" id="dMaterials" asp-for="Thesis.Materials" class="form-control" />
+                <div id="ThesiseMaterials">
+                    @if (Model.Thesis != null)
+                    {
+                        @Html.Raw(Model.Thesis.Materials)
+                    }
+
+                </div>
+                <span asp-validation-for="Thesis.Materials" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Thesis.ExpectedHours" class="control-label"></label>
+                <input asp-for="Thesis.ExpectedHours" class="form-control" />
+                <span asp-validation-for="Thesis.ExpectedHours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Thesis.Year" class="control-label"></label>
+                <input asp-for="Thesis.Year" class="form-control" />
+                <span asp-validation-for="Thesis.Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Thesis.Semester" class="control-label"></label>
+                <select asp-for="Thesis.Semester" class="form-control" asp-items="Html.GetEnumSelectList<Semester>()">
+                </select>
+                <span asp-validation-for="Thesis.Semester" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Thesis.Status" class="control-label"></label>
+                <select asp-for="Thesis.Status" class="form-control" asp-items="Html.GetEnumSelectList<status>()">
+                </select>
+                <span asp-validation-for="Thesis.Status" class="text-danger"></span>
+            </div>
+
+            <h3>Languages</h3>
+            @for (var i = 0; i < Model.Languages.Count; i++)
+            {
+                <input name="CheckedLanguages" type="checkbox" value="@Model.Languages[i].Id"> @Model.Languages[i].Name <br />
+            }
+
+            <h3>Teachers</h3>
+            @for (var i = 0; i < Model.Teachers.Count; i++)
+            {
+                <input name="CheckedTeachers" type="checkbox" value="@Model.Teachers[i].Id"> @Model.Teachers[i].Name <br />
+            }
+
+            <input type="hidden" asp-for="Thesis.Name" />
+            <input type="hidden" asp-for="Thesis.Year" />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ThesisScriptsPartial");}
+}

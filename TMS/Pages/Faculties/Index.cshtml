@@ -1,0 +1,76 @@
+﻿@page "{SelectedLetter?}"
+@model TMS.Pages.Faculties.IndexModel
+
+@{
+    ViewData["Title"] = "Faculties";
+}
+
+<h1>Faculties</h1>
+
+<hr />
+<h2 class="text-center">@Model.SelectedLetter</h2>
+
+<div class="row">
+    <div class="col-6">
+        <form asp-page="Index" class="form-inline mb-2" method="get">
+            <input class="form-control" type="search" placeholder="" name="searchString" value="@Model.CurrentFilter" />
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-page="Create">Creat New</a>
+    </div>
+</div>
+@if (Model.Alphabet.Count > 0)
+{
+    <ul class="pagination justify-content-center">
+        @foreach (var link in Model.Alphabet)
+        {
+            if (Model.FirstLetters.Contains(link) || link == "All")
+            {
+                <li class="page-item">
+                    <a asp-page="Index" asp-route-SelectedLetter="@link" class="page-link">
+                        @link
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">@link</a>
+                </li>
+            }
+        }
+    </ul>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Faculties[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Faculties[0].Thesis)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Faculties)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Thesis.Count)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,36 @@
+﻿@page
+@model TMS.Pages.Notifications.IndexModel
+@using TMS.Areas.Identity.Data
+@inject SignInManager<PlatformUser> SignInManager
+@inject UserManager<PlatformUser> UserManager
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<h1>Notifications</h1>
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (User.IsInRole("Teacher"))
+    {
+        <p>
+            <a asp-page="Create">Create New</a>
+        </p>
+    }
+}
+@foreach (var item in Model.Notifications)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <h5 class="card-header">@Html.DisplayFor(modelItem => item.Title)</h5>
+                <div class="card-body">
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                </div>
+                <div class="card-footer text-muted">
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+}

@@ -1,0 +1,46 @@
+﻿@page
+@model TMS.Pages.Grades.EditModel
+
+@{
+    ViewData["Title"] = "Edit Grade";
+}
+
+<h1>Edit</h1>
+
+<h4>Grade</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Grade.Id" />
+            <div class="form-group">
+                <label asp-for="Grade.Thesis.Name" class="control-label"></label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Grade.Student.Name" class="control-label"></label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Grade.Midterm" class="control-label"></label>
+                <input asp-for="Grade.Midterm" class="form-control" />
+                <span asp-validation-for="Grade.Midterm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Grade.Exam" class="control-label"></label>
+                <input asp-for="Grade.Exam" class="form-control" />
+                <span asp-validation-for="Grade.Exam" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

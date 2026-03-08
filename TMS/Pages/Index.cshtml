@@ -1,0 +1,59 @@
+﻿@page
+@model IndexModel
+@using TMS.Areas.Identity.Data
+@inject SignInManager<PlatformUser> SignInManager
+@inject UserManager<PlatformUser> UserManager
+
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (!User.IsInRole("Admin"))
+    {
+        <h4>Theses</h4>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Thesis[0].Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Thesis[0].Semester)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Thesis[0].Languages)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Thesis[0].Teachers)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Thesis)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Semester)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Languages.Count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Teachers.Count)
+                    </td>
+                    <td>
+                        <a asp-page="./Theses/Details" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

@@ -1,0 +1,77 @@
+﻿@page
+@using TMS.Areas.Identity.Data
+@model TMS.Pages.Users.EditModel
+@inject UserManager<PlatformUser> UserManager
+@{
+    ViewData["Title"] = "Edit User";
+
+    var years = (List<int>)ViewData["years"];
+    var roles = (List<IdentityRole>)ViewData["roles"];
+}
+
+<h1>Edit</h1>
+
+<hr />
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UserID" />
+            <div class="form-group">
+                <label>Roles</label>
+                @foreach (var role in Model.UserRoles)
+                {
+                    <span class="badge badge-pill badge-primary">@role</span>
+                }
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Input.Role"></label>
+                <select asp-for="Input.Role" class="form-control" asp-items='new SelectList(roles, "Id", "Name")'></select>
+                <span asp-validation-for="Input.Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Name"></label>
+                <input asp-for="Input.Name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.DOB"></label>
+                <input asp-for="Input.DOB" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.PhoneNumber"></label>
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div id="StudentInfo">
+                @{
+                    var val = await UserManager.IsInRoleAsync(await UserManager.FindByIdAsync(Model.UserID.ToString()), "Teacher");
+
+                }
+                <h3>Student Information</h3>
+                <div class="form-group">
+                    <label asp-for="Input.Faculty">Faculty (@Model.StudentData?.Faculty)</label>
+                    <select asp-for="Input.Faculty" class="form-control"></select>
+                    <span asp-validation-for="Input.Faculty" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_UserEditScriptsPartial" />
+}

@@ -1,0 +1,59 @@
+﻿@page
+@model TMS.Pages.Theses.OwnModel
+@using TMS.Areas.Identity.Data
+@inject SignInManager<PlatformUser> SignInManager
+@inject UserManager<PlatformUser> UserManager
+
+@{
+    ViewData["Title"] = "My Thesis";
+}
+
+<h4> My Thesis</h4>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (User.IsInRole("Student"))
+    {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Requests[0].Thesis.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Requests[0].Thesis.Semester)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Requests[0].Thesis.Teachers)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Requests[0].Approved)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Requests)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Thesis.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Thesis.Semester)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Thesis.Teachers.Count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Approved)
+                    </td>
+                    <td>
+                        <a asp-page="./Details" asp-route-id="@item.Thesis.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+        }
+    }

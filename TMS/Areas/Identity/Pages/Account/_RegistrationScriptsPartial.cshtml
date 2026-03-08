@@ -1,0 +1,45 @@
+﻿
+<script type="text/javascript">
+    $(document).ready(function () {
+        var items = "<option value='0'>Select</option>";
+        $('#Input_Faculty').html(items);
+    });
+</script>
+
+<script>
+    document.getElementById('Input_Role').addEventListener('change', (e) => {
+        var elm = document.getElementById('Input_Role')
+        var selectedrole = elm.options[elm.selectedIndex].text
+
+        console.log(selectedrole)
+
+        if (selectedrole == "Student") {
+            document.getElementById('Input_Faculty').disabled = false;
+
+            fetch("?handler=Faculties", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(async response => {
+                    try {
+                        const data = await response.json()
+                        //console.log('response data?', data)
+                        document.getElementById('Input_Faculty').innerHTML = "<option value='0'>Select</option>"
+
+                        Array.prototype.forEach.call(data, function (item, i) {
+                            document.getElementById('Input_Faculty').innerHTML += `<option value="${item.id}">${item.name}</option>`
+                        });
+                    } catch (error) {
+                        document.getElementById('Input_Faculty').innerHTML = "<option value='0'>Select</option>"
+                        console.error(error)
+                    }
+                })
+        }
+        else {
+            document.getElementById('Input_Faculty').disabled = true;
+            document.getElementById('Input_Faculty').innerHTML = "<option value='0'>Select</option>"
+        }
+    });
+</script>

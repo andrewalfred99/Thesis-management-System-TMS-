@@ -1,0 +1,43 @@
+﻿@page
+@model TMS.Pages.Grades.CreateModel
+
+@{
+    ViewData["Title"] = "Add Grade";
+}
+
+<h4>Add Grade</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-page="/Grades/Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Thesis: @Model.Grade.Thesis.Name </label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Student: @Model.Grade.Student.Name </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Grade.Midterm" class="control-label"></label>
+                <input asp-for="Grade.Midterm" class="form-control" />
+                <span asp-validation-for="Grade.Midterm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Grade.Exam" class="control-label"></label>
+                <input asp-for="Grade.Exam" class="form-control" />
+                <span asp-validation-for="Grade.Exam" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,59 @@
+﻿@page
+@using TMS.Areas.Identity.Data
+@inject SignInManager<PlatformUser> SignInManager
+@inject UserManager<PlatformUser> UserManager
+@model TMS.Pages.Grades.IndexModel
+
+@{
+    ViewData["Title"] = "Grades";
+}
+
+<h1>Grades</h1>
+<div class="col-6 text-right">
+        <a asp-page="Create">Create New</a>
+    </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Grades[0].Thesis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Grades[0].Student)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Grades[0].Midterm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Grades[0].Exam)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Grades)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Thesis.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Midterm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exam)
+                </td>
+                <td>
+                    @if (User.IsInRole("Teacher") && item.Thesis.Status == status.Open &&
+                      item.Thesis.Teachers.Contains(await UserManager.GetUserAsync(User)))
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
