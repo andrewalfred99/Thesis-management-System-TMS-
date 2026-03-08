@@ -10,6 +10,7 @@ using TMS.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TMS.Areas.Identity.Data;
+using Microsoft.EntityFrameworkCore;
 namespace TMS
 {
     public class Program
@@ -89,7 +90,7 @@ namespace TMS
                 {
                     var context = scope.ServiceProvider.GetService<PlatformContext>();
 
-                    context.Database.EnsureCreated();
+                    context.Database.Migrate();
                     ConfigureIdentity(scope).GetAwaiter().GetResult();
 
                     SeedData.Initialize(services);

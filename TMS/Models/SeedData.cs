@@ -71,6 +71,15 @@ namespace TMS.Models
             var userManager = scope.ServiceProvider.GetService<UserManager<PlatformUser>>();
             var context = scope.ServiceProvider.GetService<PlatformContext>();
 
+            // ensure roles exist
+            foreach (var roleName in new[] { "Teacher", "Student" })
+            {
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+
             // Teachers
             var teachers = await userManager.GetUsersInRoleAsync("Teacher");
             if (teachers.Count == 0)
@@ -92,6 +101,31 @@ namespace TMS.Models
                 };
                 await userManager.CreateAsync(teacher2, "Qwerty1234%");
                 await userManager.AddToRoleAsync(teacher2, "Teacher");
+            }
+
+            // Teacher (known demo account)
+            const string teacherEmail = "teacher@tms.local";
+            const string teacherPassword = "Teacher1234%";
+            var teacher = await userManager.FindByEmailAsync(teacherEmail);
+            if (teacher == null)
+            {
+                teacher = new PlatformUser
+                {
+                    Name = "Teacher",
+                    UserName = teacherEmail,
+                    Email = teacherEmail,
+                    EmailConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(teacher, teacherPassword);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(teacher, "Teacher");
+                }
+            }
+            else if (!await userManager.IsInRoleAsync(teacher, "Teacher"))
+            {
+                await userManager.AddToRoleAsync(teacher, "Teacher");
             }
 
             // Students
@@ -132,6 +166,35 @@ namespace TMS.Models
                 await userManager.AddToRoleAsync(s3, "Student");
 
              
+            }
+
+            // Student (known demo account)
+            const string studentEmail = "student@tms.local";
+            const string studentPassword = "Student1234%";
+            var student = await userManager.FindByEmailAsync(studentEmail);
+            if (student == null)
+            {
+                var faculty = context.Faculties.SingleOrDefault(s => s.Name == "HITS")
+                    ?? context.Faculties.FirstOrDefault();
+
+                student = new Student
+                {
+                    Name = "Student",
+                    UserName = studentEmail,
+                    Email = studentEmail,
+                    EmailConfirmed = true,
+                    Faculty = faculty
+                };
+
+                var result = await userManager.CreateAsync(student, studentPassword);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(student, "Student");
+                }
+            }
+            else if (!await userManager.IsInRoleAsync(student, "Student"))
+            {
+                await userManager.AddToRoleAsync(student, "Student");
             }
         }
     }
