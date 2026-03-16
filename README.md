@@ -86,16 +86,12 @@ Notes:
 
 ## Project structure (high level)
 
-- `TMS/Pages/` — Razor Pages UI (theses, faculties, grades, requests, notifications, users)
-- `TMS/Areas/Identity/` — Identity UI and data models
-- `TMS/Data/` — domain models and helpers
-- `TMS/Models/SeedData.cs` — demo user seeding
+- `TMS/Pages/` â€” Razor Pages UI (theses, faculties, grades, requests, notifications, users)
+- `TMS/Areas/Identity/` â€” Identity UI and data models
+- `TMS/Data/` â€” domain models and helpers
+- `TMS/Models/SeedData.cs` â€” demo user seeding
 
 ## Security & deployment notes
 
 - Do not commit real passwords, live connection strings, or secrets to source control.
 - For production, use secure secret storage (environment variables, user-secrets, or a vault) and enforce proper TLS/cert configuration.
-
-## License
-
-If you plan to publish or deploy this for real TSU usage, ensure licensing, ownership, and policy compliance are clearly defined.
